@@ -1,138 +1,160 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tahiry — Tableau de Bord</title>
-
-  <link rel="stylesheet" href="style.css" />
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tahiry - Tableau de Bord</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-  <!-- TOP NAV -->
-  <header class="topnav">
-    <div class="brand">
-      <svg class="logo" width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="3" fill="#fff"/></svg>
-      <span>Tahiry</span>
-    </div>
 
-    <nav class="navlinks">
-      <a href="#accueil">Accueil</a>
-      <a href="#dashboard" class="active">Tableau de bord</a>
-      <a href="#revenus">Revenus</a>
-      <a href="#depenses">Dépenses</a>
-      <a href="#analyse">Analyse</a>
-      <a href="#budget">Budget</a>
-      <a href="#liste">Liste d'achat</a>
-    </nav>
-
-    <div class="nav-actions">
-      <button class="btn add" id="openAdd">+ Ajouter</button>
-      <button class="icon-btn" id="notifBtn" title="Notifications">🔔</button>
-      <div class="profile">Ange-H ▾</div>
-    </div>
-  </header>
-
-  <main class="container">
-    <!-- WELCOME BANNER -->
-    <section id="dashboard" class="banner">
-      <div class="banner-left">
-        <h1>📈 Tableau de Bord</h1>
-        <p>Bienvenue Ange-H, voici un aperçu de vos finances</p>
-        <small>📅 Dernière mise à jour : <span id="lastUpdate">--</span></small>
-      </div>
-      <div class="banner-right">
-        <div class="round up">↑<br><small>Revenus</small></div>
-        <div class="round down">↓<br><small>Dépenses</small></div>
-      </div>
-    </section>
-
-    <!-- STAT CARDS -->
-    <section class="stats">
-      <article class="stat card">
-        <div class="stat-label">Solde Total</div>
-        <div class="stat-value" id="totalBalance">0.00 Ar</div>
-        <div class="stat-sub positive">↑ Positif</div>
-      </article>
-
-      <article class="stat card">
-        <div class="stat-label">Revenus Totaux</div>
-        <div class="stat-value green" id="totalIncome">0.00 Ar</div>
-        <div class="stat-sub">0 transactions</div>
-      </article>
-
-      <article class="stat card">
-        <div class="stat-label">Dépenses Totales</div>
-        <div class="stat-value red" id="totalExpense">0.00 Ar</div>
-        <div class="stat-sub">0 transactions</div>
-      </article>
-
-      <article class="stat card">
-        <div class="stat-label">Ce Mois</div>
-        <div class="stat-value" id="thisMonth">0.00 Ar</div>
-        <div class="stat-sub">Nov 2025</div>
-      </article>
-    </section>
-
-    <!-- CHARTS & SIDEBAR ACTIONS -->
-    <section class="main-grid">
-      <div class="panel card">
-        <h3>Évolution Mensuelle</h3>
-        <canvas id="lineChart" height="160"></canvas>
-      </div>
-
-      <aside class="side card">
-        <h3>Actions Rapides</h3>
-        <button class="btn full" id="quickAddIncome">+ Ajouter un Revenu</button>
-        <button class="btn full outline" id="quickAddExpense">+ Ajouter une Dépense</button>
-
-        <h4 style="margin-top:18px">Statistiques Rapides</h4>
-        <div class="quick-stats">
-          <div class="small-card green">0<br><small>Revenus</small></div>
-          <div class="small-card red">0<br><small>Dépenses</small></div>
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+    <div class="nav-left">
+        <div class="logo-box">
+            <i class="icon-wallet">💼</i>
+            <span class="logo-text">Tahiry</span>
         </div>
-      </aside>
-    </section>
 
-    <!-- LAST TRANSACTIONS -->
-    <section class="tables">
-      <div class="card wide">
-        <h3>Dernières Transactions</h3>
-        <table id="txTable">
-          <thead><tr><th>Ref</th><th>Type</th><th>Catégorie</th><th>Montant</th><th>Date</th><th></th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <!-- ADD MODAL -->
-  <div class="modal" id="modalAdd" aria-hidden="true">
-    <div class="modal-content card">
-      <button class="close" id="closeModal">✕</button>
-      <h3>Ajouter Transaction</h3>
-      <form id="addForm">
-        <label>Type
-          <select id="txType"><option value="income">Revenu</option><option value="expense">Dépense</option></select>
-        </label>
-        <label>Catégorie
-          <input id="txCategory" placeholder="Ex: Salaire / Alimentation" required />
-        </label>
-        <label>Montant (Ar)
-          <input id="txAmount" type="number" min="0" step="1" required />
-        </label>
-        <label>Date
-          <input id="txDate" type="date" required />
-        </label>
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <button class="btn" type="submit">Ajouter</button>
-          <button class="btn outline" type="button" id="cancelAdd">Annuler</button>
-        </div>
-      </form>
+        <nav class="nav-links">
+            <a href="#"><i>🏠</i> Accueil</a>
+            <a class="active" href="#"><i>📊</i> Tableau de bord</a>
+            <a href="#"><i>📈</i> Revenus</a>
+            <a href="#"><i>📉</i> Dépenses</a>
+            <a href="#"><i>📊</i> Analyse</a>
+            <a href="#"><i>💰</i> Budget</a>
+            <a href="#"><i>🛒</i> Liste d'achat</a>
+        </nav>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <div class="nav-right">
+        <button class="btn-add"><i>➕</i> Ajouter</button>
+        <i class="notif">🔔</i>
+
+        <div class="user-menu">
+            <span class="username">Ange-H</span>
+            <i>▼</i>
+        </div>
+    </div>
+</header>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="container">
+
+    <!-- ===== HEADER CARD ===== -->
+    <section class="header-card">
+        <div class="header-info">
+            <h1>📈 Tableau de Bord</h1>
+            <p>Bienvenue Ange-H, voici un aperçu de vos finances</p>
+            <span class="update-time">🗓 Dernière mise à jour : 24/11/2025 à 17:07</span>
+        </div>
+
+        <div class="header-actions">
+            <button class="round-btn green"><i>⬆</i> Revenus</button>
+            <button class="round-btn red"><i>⬇</i> Dépenses</button>
+        </div>
+    </section>
+
+
+    <!-- ===== SMALL CARDS ===== -->
+    <section class="cards-row">
+        <div class="mini-card">
+            <h3>Solde Total</h3>
+            <h2 class="green">0.00 Ar</h2>
+            <p class="green small">↑ Positif</p>
+            <div class="card-icon purple">🧾</div>
+        </div>
+
+        <div class="mini-card">
+            <h3>Revenus Totaux</h3>
+            <h2 class="green">0.00 Ar</h2>
+            <p class="green small">0 transactions</p>
+            <div class="card-icon green">⬆</div>
+        </div>
+
+        <div class="mini-card">
+            <h3>Dépenses Totales</h3>
+            <h2 class="red">0.00 Ar</h2>
+            <p class="red small">0 transactions</p>
+            <div class="card-icon red">⬇</div>
+        </div>
+
+        <div class="mini-card">
+            <h3>Ce Mois</h3>
+            <h2 class="green">0.00 Ar</h2>
+            <p class="blue small">📅 Nov 2025</p>
+            <div class="card-icon blue">📅</div>
+        </div>
+    </section>
+
+
+    <!-- ===== CHART ROW ===== -->
+    <section class="chart-row">
+
+        <div class="chart-card">
+            <div class="card-title">
+                <h2>📉 Évolution Mensuelle</h2>
+                <div class="legend">
+                    <span class="dot green"></span> Revenus
+                    <span class="dot red"></span> Dépenses
+                </div>
+            </div>
+
+            <canvas id="monthlyChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <div class="card-title">
+                <h2>📊 Dépenses par Catégorie</h2>
+                <a class="expand">⛶ Agrandir</a>
+            </div>
+
+            <canvas id="expenseCatChart"></canvas>
+        </div>
+    </section>
+
+
+    <!-- ===== REVENUS CAT + ACTIONS ===== -->
+    <section class="double-row">
+
+        <div class="chart-card">
+            <div class="card-title">
+                <h2>📊 Revenus par Catégorie</h2>
+                <a class="expand">⛶ Agrandir</a>
+            </div>
+
+            <canvas id="incomeCatChart"></canvas>
+        </div>
+
+        <div class="actions-card">
+            <h2 class="icon-title">⚡ Actions Rapides</h2>
+
+            <div class="actions-grid">
+                <button class="btn green big"><i>➕</i> Ajouter un Revenu</button>
+                <button class="btn red big"><i>➕</i> Ajouter une Dépense</button>
+                <button class="btn blue big"><i>📋</i> Voir les Revenus</button>
+                <button class="btn purple big"><i>📋</i> Voir les Dépenses</button>
+            </div>
+
+            <div class="stats-mini">
+                <div class="stat-box green-bg">
+                    <h3>0</h3><p>Revenus</p>
+                </div>
+
+                <div class="stat-box red-bg">
+                    <h3>0</h3><p>Dépenses</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
